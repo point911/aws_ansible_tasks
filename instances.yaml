@@ -5,7 +5,7 @@
     region={{ aws.region }}
     store="ebs"
     virt="hvm"
-    distro="ubutnu"
+    distro="ubuntu"
     release="trusty"
   register: ami_data
 
