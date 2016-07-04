@@ -1,1 +1,2 @@
+04/07/2015 - 0.0.2 Fix ubuntu name
 04/07/2015 - 0.0.1 Initial commit. Flat folder structure
