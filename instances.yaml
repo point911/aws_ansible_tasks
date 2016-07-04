@@ -39,7 +39,7 @@
 - name: Add EC2 instances to inventory groups.
   add_host:
     name: "{{ item.1.tagged_instances.0.public_ip }}"
-    groups: "aws,{{ item.1.item.group }},{{ item.1.item.name }}"
+    groups: "aws,{{ item.1.item.inventory_group }},{{ item.1.item.name }}"
     # You can dynamically add inventory variables per-host.
     ansible_ssh_user: ubuntu
 
