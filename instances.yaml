@@ -28,7 +28,7 @@
     exact_count: 1
     count_tag:
       Name: "{{ item.name }}"
-      inventory_group: "{{ item.group }}"
+      inventory_group: "{{ item.inventory_group }}"
       inventory_host: "{{ item.name }}"
   register: created_instances
   with_items: "{{ aws.instances }}"
