@@ -1,0 +1,10 @@
+---
+
+- name: Take security groups sdown
+  local_action:
+    module: ec2_group
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    region: "{{ aws.region }}"
+    state: 'absent'
+  with_items: "{{ aws.security_groups }}"

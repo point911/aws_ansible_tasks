@@ -1,0 +1,9 @@
+---
+
+- name: remove security key
+  local_action:
+    module: ec2_key
+    name: "{{ aws.keypair }}"
+    wait: yes
+    region: "{{ aws.region }}"
+    state: absent

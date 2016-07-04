@@ -1,0 +1,11 @@
+---
+- name: Upload artifact to S3 storage
+  s3:
+    bucket: "{{ aws.s3.bucket }}"
+    object: "/{{ aws.s3.object }}"
+    src: "{{ aws.s3.upload_path }}"
+    mode: put
+
+  register: s3_info
+
+- debug: msg="{{ s3_info }}"

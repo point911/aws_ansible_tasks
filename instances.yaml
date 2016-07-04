@@ -1,0 +1,58 @@
+---
+
+- name: search for an ami image
+  ec2_ami_search: >
+    region={{ aws.region }}
+    store="ebs"
+    virt="hvm"
+    distro="ubutnu"
+    release="trusty"
+  register: ami_data
+
+- name: debug ami image
+  debug: msg="{{ ami_data }}"
+
+- name: Provision EC2 instances.
+  ec2:
+    key_name: "{{ aws.keypair }}"
+    instance_tags:
+      Name: "{{ item.name }}"
+      inventory_group: "{{ item.inventory_group }}"
+      inventory_host: "{{ item.name }}"
+    group: "{{ item.security_group }}"
+    instance_type: "{{ item.instance_type }}" # Free
+    image: "{{ ami_data.ami }}"
+    region: "{{ aws.region }}"
+    wait: yes
+    wait_timeout: 500
+    exact_count: 1
+    count_tag:
+      Name: "{{ item.name }}"
+      inventory_group: "{{ item.group }}"
+      inventory_host: "{{ item.name }}"
+  register: created_instances
+  with_items: "{{ aws.instances }}"
+
+- name: debug instance start
+  debug: 'msg="{{ created_instances }}"'
+
+- name: Add EC2 instances to inventory groups.
+  add_host:
+    name: "{{ item.1.tagged_instances.0.public_ip }}"
+    groups: "aws,{{ item.1.item.group }},{{ item.1.item.name }}"
+    # You can dynamically add inventory variables per-host.
+    ansible_ssh_user: ubuntu
+
+  when: item.1.instances is defined
+  with_indexed_items: "{{ created_instances.results }}"
+
+- debug: msg="{{ groups.aws }}"
+
+# Wait until ssh will be reachable
+- name: Wait until ssh will be reachable
+  local_action: wait_for
+    host={{ item }}
+    port=22
+    timeout=300
+    state=started
+  with_items: "{{ groups.aws }}"

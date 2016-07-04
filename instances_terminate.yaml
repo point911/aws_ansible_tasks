@@ -1,0 +1,11 @@
+---
+
+- name: Terminate instances that were previously launched
+  ec2:
+    region: "{{ aws.region }}"
+    instance_ids: "{{ hostvars[groups['tag_Name_'+item.name][0]]['ec2_id'] }}"
+    state: 'absent'
+    wait: yes
+    group: "{{ item.security_group }}"
+  register: deleted_instances
+  with_items: "{{ aws.instances }}"

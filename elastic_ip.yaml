@@ -1,0 +1,10 @@
+---
+- name: Associate elastic ip
+  ec2_eip:
+    device_id: "{{ aws.elastic_ip.device }}"
+    ip: "{{ aws.elastic_ip.ip }}"
+    region: "{{ aws.elastic_ip.region }}"
+
+  register: ec2_eip_info
+
+- debug: msg="{{ ec2_eip_info }}"
