@@ -26,7 +26,7 @@
   local_action:
     module: copy
     content: "{{ key_data.key.private_key }}"
-    dest: "keys/{{ aws.keypair }}"
+    dest: "keys/{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != '' else aws.keypair }}"
     mode: 0600
   when: key_data.key.private_key|default(0)
 
