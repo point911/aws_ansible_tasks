@@ -3,7 +3,7 @@
 - name: remove security key
   local_action:
     module: ec2_key
-    name: "{{ aws.keypair }}"
+    name: "{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != '' else aws.keypair }}"
     wait: yes
-    region: "{{ aws.region }}"
+    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     state: absent

@@ -5,6 +5,6 @@
     module: ec2_group
     name: "{{ item.name }}"
     description: "{{ item.description }}"
-    region: "{{ aws.region }}"
+    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     state: 'absent'
   with_items: "{{ aws.security_groups }}"

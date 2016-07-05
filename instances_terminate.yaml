@@ -2,7 +2,7 @@
 
 - name: Terminate instances that were previously launched
   ec2:
-    region: "{{ aws.region }}"
+    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     instance_ids: "{{ hostvars[groups['tag_Name_'+item.name][0]]['ec2_id'] }}"
     state: 'absent'
     wait: yes

@@ -2,7 +2,7 @@
 
 - name: search for an ami image
   ec2_ami_search: >
-    region={{ aws.region }}
+    region="{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     store="ebs"
     virt="hvm"
     distro="ubuntu"
@@ -14,7 +14,7 @@
 
 - name: Provision EC2 instances.
   ec2:
-    key_name: "{{ aws.keypair }}"
+    key_name: "{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != '' else aws.keypair }}"
     instance_tags:
       Name: "{{ item.name }}"
       inventory_group: "{{ item.inventory_group }}"
@@ -22,7 +22,7 @@
     group: "{{ item.security_group }}"
     instance_type: "{{ item.instance_type }}" # Free
     image: "{{ ami_data.ami }}"
-    region: "{{ aws.region }}"
+    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     wait: yes
     wait_timeout: 500
     exact_count: 1
