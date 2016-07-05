@@ -9,16 +9,16 @@
 - name: remove existing keypair when force_keypair=True
   local_action:
     module: ec2_key
-    name: "{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != "" else aws.keypair }}"
-    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != "" else aws.region }}"
+    name: {{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != "" else aws.keypair }}
+    region: {{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != "" else aws.region }}
     state: absent
   when: force_keypair|default(False)
 
 - name: make a keypair with the specified name
   local_action:
     module: ec2_key
-    name: "{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != "" else aws.keypair }}"
-    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != "" else aws.region }}"
+    name: {{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != "" else aws.keypair }}
+    region: {{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != "" else aws.region }}
     wait: yes
   register: key_data
 
