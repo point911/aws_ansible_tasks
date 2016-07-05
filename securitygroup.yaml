@@ -1,7 +1,9 @@
 ---
 - name: Configure EC2 Security Groups.
   ec2_group:
-    name: "{{ item.name }}"
+    # Due to current notation we will have only one new security group per role
+    # But still saving possibility to create multiple security groups and migrate for template generaition in future
+    name: "{{ lookup('env','AWS_SECURITY_GROUP_NAME') if lookup('env','AWS_SECURITY_GROUP_NAME') != '' else item.name }}"
     description: "{{ item.description }}"
     region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     state: present
