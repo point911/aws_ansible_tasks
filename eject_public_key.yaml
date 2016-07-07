@@ -1,0 +1,4 @@
+- name: Delete autorized key from ubuntu user
+  lineinfile: dest=/home/ubuntu/.ssh/authorized_keys
+              state=absent
+              regexp="^{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != '' else aws.keypair }}$"
