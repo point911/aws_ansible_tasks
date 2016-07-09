@@ -1,0 +1,6 @@
+---
+
+- debug: msg="{{ item.0.key1 }}"
+  with_subelements:
+    - "{{ aws.objs }}"
+    - key2
