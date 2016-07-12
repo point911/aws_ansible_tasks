@@ -6,4 +6,4 @@
     region: "{{ lookup('env','AWS_REGION') }}"
     object: "/{{ aws.s3.object }}"
     dest: "{{ aws.s3.download_path }}"
-    mode=get
+    mode: get
