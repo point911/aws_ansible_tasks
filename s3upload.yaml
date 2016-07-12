@@ -2,6 +2,9 @@
 
 - name: Delete object before upload new one
   s3:
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_KEY') }}"
+    region: "{{ lookup('env','AWS_REGION') }}"
     bucket: "{{ aws.s3.bucket }}"
     object: "/{{ aws.s3.object }}"
     src: "{{ aws.s3.upload_path }}"
@@ -13,6 +16,9 @@
 
 - name: Upload artifact to S3 storage
   s3:
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_KEY') }}"
+    region: "{{ lookup('env','AWS_REGION') }}"
     bucket: "{{ aws.s3.bucket }}"
     object: "/{{ aws.s3.object }}"
     src: "{{ aws.s3.upload_path }}"
