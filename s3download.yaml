@@ -1,0 +1,9 @@
+- name: Copy spike artifact from s3 bucket
+  s3:
+    bucket: "{{ aws.s3.bucket }}"
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_KEY') }}"
+    region: "{{ lookup('env','AWS_REGION') }}"
+    object: "/{{ aws.s3.object }}"
+    dest: "{{ aws.s3.download_path }}"
+    mode=get
