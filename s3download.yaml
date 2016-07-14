@@ -1,4 +1,4 @@
-- name: Copy spike artifact from s3 bucket
+- name: Copy artifact from s3 bucket
   s3:
     bucket: "{{ aws.s3.bucket }}"
     aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
