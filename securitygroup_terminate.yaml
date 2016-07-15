@@ -1,6 +1,6 @@
 ---
 
-- name: Take security groups sdown
+- name: Take security groups down
   local_action:
     module: ec2_group
     name: "{{ item.name }}"

@@ -1,11 +1,31 @@
 ---
 
+- name: search for an ami image
+  ec2_ami_search: >
+    region="{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
+    store="ebs"
+    virt="hvm"
+    distro="ubuntu"
+    release="trusty"
+  register: ami_data
+
 - name: Terminate instances that were previously launched
   ec2:
+    key_name: "{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != '' else aws.keypair }}"
+    instance_tags:
+      Name: "{{ item.name }}"
+      inventory_group: "{{ lookup('env','AWS_INVENTORY_GROUP') if lookup('env','AWS_INVENTORY_GROUP') != '' else item.inventory_group }}"
+      inventory_host: "{{ item.name }}"
+    group: "{{ lookup('env','AWS_SECURITY_GROUP_LIST') if lookup('env','AWS_SECURITY_GROUP_LIST') != '' else item.security_group }}"
+    instance_type: "{{ lookup('env','AWS_INSTANCE_TYPE') if lookup('env','AWS_INSTANCE_TYPE') != '' else item.instance_type }}" # Free
+    image: "{{ ami_data.ami }}"
     region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
-    instance_ids: "{{ hostvars[groups['tag_Name_'+item.name][0]]['ec2_id'] }}"
-    state: 'absent'
     wait: yes
-    group: "{{ item.security_group }}"
-  register: deleted_instances
+    wait_timeout: 500
+    exact_count: 0
+    count_tag:
+      Name: "{{ item.name }}"
+      inventory_group: "{{ item.inventory_group }}"
+      inventory_host: "{{ item.name }}"
+  register: created_instances
   with_items: "{{ aws.instances }}"
