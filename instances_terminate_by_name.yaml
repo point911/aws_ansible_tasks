@@ -2,9 +2,9 @@
 
 - name: Terminate instances by theirs tag Name
   ec2:
-    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else instance item.region }}"
-    instance_ids: "{{ hostvars[groups['tag_Name_'+instance.name][0]]['ec2_id'] }}"
+    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' }}"
+    instance_ids: "{{ hostvars[groups['tag_Name_'+lookup('env','AWS_INSTANCE_FOR_TERMINATE') if lookup('env','AWS_INSTANCE_FOR_TERMINATE') != ''][0]]['ec2_id'] }}"
     state: 'absent'
     wait: yes
-    group: "{{ lookup('env','AWS_SECURITY_GROUP') if lookup('env','AWS_SECURITY_GROUP') != '' else instance.security_group }}"
+    group: "{{ lookup('env','AWS_SECURITY_GROUP') if lookup('env','AWS_SECURITY_GROUP') != '' }}"
   register: deleted_instances
