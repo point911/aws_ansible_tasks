@@ -2,7 +2,7 @@
 
 - name: Terminate instances by theirs tag Name
   ec2:
-    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' instance item.region }}"
+    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else instance item.region }}"
     instance_ids: "{{ hostvars[groups['tag_Name_'+instance.name][0]]['ec2_id'] }}"
     state: 'absent'
     wait: yes
