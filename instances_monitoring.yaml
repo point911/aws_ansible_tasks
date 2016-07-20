@@ -24,7 +24,7 @@
     period: "{{ item.period }}"
     evaluation_periods: "{{ item.evaluation_periods }}"
     description: "It will be triggered when CPU utilization is more than {{ item.threshold }}% for {{ item.period|int / 60 }} minutes"
-    dimensions: {"InstanceId": "{{ ec2_id }}"}
+    dimensions: "InstanceId"="{{ ec2_id }}"
     alarm_actions: {{ item.alarm_topic }}
     ok_actions: {{ item.ok_topic }}
     aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
