@@ -13,22 +13,22 @@
 
 - name: Setup alerting for instances
   ec2_metric_alarm:
-    state={{ alarm_state }}
-    region="{{ lookup('env','AWS_REGION') }}"
-    name="{{ ec2_tag_Name }}-{{ item.name }}"
-    metric="{{ item.type }}"
-    statistic="Average"
-    comparison="{{ item.comparator }}"
-    threshold="{{ item.threshold }}"
-    unit="{{ item.unit }}"
-    period="{{ item.period }}"
-    evaluation_periods="{{ item.evaluation_periods }}"
-    description="It will be triggered when CPU utilization is more than {{ item.threshold }}% for {{ item.period|int / 60 }} minutes"
-    dimensions="InstanceId"="{{ ec2_id }}"
-    alarm_actions={{ item.alarm_topic }}
-    ok_actions={{ item.ok_topic }}
-    aws_access_key="{{ lookup('env','AWS_ACCESS_KEY') }}"
-    aws_secret_key="{{ lookup('env','AWS_SECRET_KEY') }}"
-    namespace="AWS/EC2"
+    state: {{ alarm_state }}
+    region: "{{ lookup('env','AWS_REGION') }}"
+    name: "{{ ec2_tag_Name }}-{{ item.name }}"
+    metric: "{{ item.type }}"
+    statistic: "Average"
+    comparison: "{{ item.comparator }}"
+    threshold: "{{ item.threshold }}"
+    unit: "{{ item.unit }}"
+    period: "{{ item.period }}"
+    evaluation_periods: "{{ item.evaluation_periods }}"
+    description: "It will be triggered when CPU utilization is more than {{ item.threshold }}% for {{ item.period|int / 60 }} minutes"
+    dimensions: {"InstanceId": "{{ ec2_id }}"}
+    alarm_actions: {{ item.alarm_topic }}
+    ok_actions: {{ item.ok_topic }}
+    aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env','AWS_SECRET_KEY') }}"
+    namespace: "AWS/EC2"
   register: created_alering
   with_items: "{{ env.aws.alerting}}"
