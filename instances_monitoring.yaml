@@ -2,13 +2,13 @@
   ec2_metric_alarm:
     state=present
     region="{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
-    name="{{ result.Name }}-cpu-utilization"
-    metric="{{ item.type }}" # CPUUtilization
-    statistic=Average comparison="{{ item.comparator }}"  # >=
-    threshold="{{ item.threshold }}" # 80.0
-    unit="{{ item.unit }}" # Percent
-    period="{{ item.period }}" # 300
-    evaluation_periods="{{ item.evaluation_periods }}" # 1
+    name="{{ ec_tag_Name }}-{{ item.name }}"
+    metric="{{ item.type }}"
+    statistic=Average comparison="{{ item.comparator }}"
+    threshold="{{ item.threshold }}"
+    unit="{{ item.unit }}"
+    period="{{ item.period }}"
+    evaluation_periods="{{ item.evaluation_periods }}"
     description="It will be triggered when CPU utilization is more than {{ item.threshold }}% for {{ item.period/60 }} minutes"
     dimensions="InstanceId"="{{ ec2_id }}"
     alarm_actions={{ item.alarm_topic }}
