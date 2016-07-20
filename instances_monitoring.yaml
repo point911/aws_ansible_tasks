@@ -1,3 +1,16 @@
+- name: Install some dependencies
+  apt: name={{ item }} state=installed
+  with_items:
+    - unzip
+    - python-pip
+
+- name: Install python dependencies
+  pip: name={{ item }} state=present
+  with_items:
+    - boto
+    - boto3
+    - awscli
+
 - name: Setup alerting for instances
   ec2_metric_alarm:
     state=present
