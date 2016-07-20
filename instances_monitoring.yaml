@@ -1,7 +1,7 @@
 - name: Setup alerting for instances
   ec2_metric_alarm:
     state=present
-    region="{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
+    region="{{ lookup('env','AWS_REGION') }}"
     name="{{ ec2_tag_Name }}-{{ item.name }}"
     metric="{{ item.type }}"
     statistic=Average comparison="{{ item.comparator }}"
@@ -13,5 +13,7 @@
     dimensions="InstanceId"="{{ ec2_id }}"
     alarm_actions={{ item.alarm_topic }}
     ok_actions={{ item.ok_topic }}
+    aws_access_key="{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret_key="{{ lookup('env','AWS_SECRET_KEY') }}"
   register: created_alering
   with_items: "{{ env.aws.alerting}}"
