@@ -21,9 +21,7 @@
     mode: 0444
 
 - name: Unpack archive with monitoring scripts
-  unarchive:
-    src=/tmp/CloudWatchMonitoringScripts-1.2.1.zip
-    dest=/home/ubuntu/
+  shell: unzip /tmp/CloudWatchMonitoringScripts-1.2.1.zip -d /home/ubuntu/
 
 - name: Update cron entry
   cron:
