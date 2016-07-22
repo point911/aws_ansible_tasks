@@ -3,6 +3,8 @@
   with_items:
     - unzip
     - python-pip
+    - libwww-perl
+    - libdatetime-perl
 
 - name: Install python dependencies
   pip: name={{ item }} state=present
@@ -10,8 +12,7 @@
     - boto
     - boto3
     - awscli
-    - libwww-perl
-    - libdatetime-perl
+
 
 - name: Download default AWS monitoring script
   get_url:
