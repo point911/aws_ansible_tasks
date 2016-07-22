@@ -18,7 +18,7 @@
   get_url:
     url: http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip
     dest: /tmp/CloudWatchMonitoringScripts-1.2.1.zip
-    mode: 0440
+    mode: 0444
 
 - name: Unpack archive with monitoring scripts
   unarchive:
