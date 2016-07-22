@@ -41,7 +41,7 @@
     region: "{{ lookup('env','AWS_REGION') }}"
     name: "{{ ec2_tag_Name }}-{{ item.name }}"
     metric: "{{ item.type }}"
-    statistic: "Minimum"
+    statistic: "{{ item.statistic }}"
     comparison: "{{ item.comparator }}"
     threshold: "{{ item.threshold }}"
     unit: "{{ item.unit }}"
