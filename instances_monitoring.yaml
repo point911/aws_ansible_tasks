@@ -33,7 +33,7 @@
   cron:
     minute: 1
     user: "root"
-    job: "/home/ubuntu/aws-scripts-mon/mon-put-instance-data.pl --aws-access-key-id={{ lookup('env','AWS_ACCESS_KEY') }} --aws-secret-key={{ lookup('env','AWS_SECRET_KEY') }} --mem-util --disk-space-util --disk-path=/ --from-cron"
+    job: "/home/ubuntu/aws-scripts-mon/mon-put-instance-data.pl --aws-access-key-id={{ lookup('env','AWS_ACCESS_KEY') }} --aws-secret-key={{ lookup('env','AWS_SECRET_KEY') }} --mem-util --disk-space-util --disk-path=/"
 
 - name: Setup alerting for instances
   ec2_metric_alarm:
