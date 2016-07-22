@@ -23,6 +23,9 @@
 - name: Unpack archive with monitoring scripts
   shell: unzip /tmp/CloudWatchMonitoringScripts-1.2.1.zip -d /home/ubuntu/
 
+- name: Send initial data for creating metrics at Cloudwatch
+  shell: /home/ubuntu/aws-scripts-mon/mon-put-instance-data.pl --aws-access-key-id={{ lookup('env','AWS_ACCESS_KEY') }} --aws-secret-key={{ lookup('env','AWS_SECRET_KEY') }} --mem-util --disk-space-util --disk-path=/
+
 - name: Update cron entry
   cron:
     minute: 5
