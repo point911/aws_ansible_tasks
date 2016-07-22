@@ -20,6 +20,9 @@
     dest: /tmp/CloudWatchMonitoringScripts-1.2.1.zip
     mode: 0444
 
+- name: Delete scripts if exist
+  file: path=/home/ubuntu/aws-scripts-mon state=absent
+
 - name: Unpack archive with monitoring scripts
   shell: unzip /tmp/CloudWatchMonitoringScripts-1.2.1.zip -d /home/ubuntu/
 
