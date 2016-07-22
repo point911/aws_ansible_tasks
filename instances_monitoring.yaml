@@ -23,7 +23,7 @@
 - name: Unpack archive with monitoring scripts
   unarchive:
     src=/tmp/CloudWatchMonitoringScripts-1.2.1.zip
-    dest=/home/ubuntu/aws-scripts-mon
+    dest=/home/ubuntu/
 
 - name: Update cron entry
   cron:
