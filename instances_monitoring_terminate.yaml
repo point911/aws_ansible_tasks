@@ -1,4 +1,4 @@
-- name: Setup alerting for instances
+- name: Terminating monitoring for instance
   ec2_metric_alarm:
     state: absent
     region: "{{ lookup('env','AWS_REGION') }}"
