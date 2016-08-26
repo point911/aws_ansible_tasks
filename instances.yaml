@@ -30,6 +30,7 @@
       Name: "{{ item.name }}"
       inventory_group: "{{ item.inventory_group }}"
       inventory_host: "{{ item.name }}"
+    assign_public_ip: "{{ item.assign_public_ip if item.assign_public_ip is defined else 'True' }}"
   register: created_instances
   with_items: "{{ aws.instances }}"
 
