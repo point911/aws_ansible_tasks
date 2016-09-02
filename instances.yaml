@@ -33,6 +33,7 @@
     vpc_subnet_id: "{{ lookup('env','AWS_SUBNET_ID') if lookup('env','AWS_SUBNET_ID') != '' else '' }}"
     assign_public_ip: "{{ item.assign_public_ip if item.assign_public_ip is defined else 'True' }}"
     ebs_optimized: "{{ item.ebs_optimized if item.ebs_optimized is defined else 'True' }}"
+    volumes: "{{ item.volumes if item.volumes is defined else '' }}"
   register: created_instances
   with_items: "{{ aws.instances }}"
 
