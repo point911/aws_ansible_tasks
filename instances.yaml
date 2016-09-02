@@ -20,7 +20,7 @@
       inventory_group: "{{ lookup('env','AWS_INVENTORY_GROUP') if lookup('env','AWS_INVENTORY_GROUP') != '' else item.inventory_group }}"
       inventory_host: "{{ item.name }}"
     group: "{{ lookup('env','AWS_SECURITY_GROUP_LIST') if lookup('env','AWS_SECURITY_GROUP_LIST') != '' else item.security_group }}"
-    instance_type: "{{ lookup('env','AWS_INSTANCE_TYPE') if lookup('env','AWS_INSTANCE_TYPE') != '' else item.instance_type }}" # Free
+    instance_type: "{{ item.instance_type if item.instance_type is defined else 't2.medium' }}"
     image: "{{ ami_data.ami }}"
     region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
     wait: yes
