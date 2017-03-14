@@ -3,14 +3,13 @@
   ec2_group:
     # Due to current notation we will have only one new security group per role
     # But still saving possibility to create multiple security groups and migrate for template generaition in future
-    name: "{{ lookup('env','AWS_SECURITY_GROUP_NAME') if lookup('env','AWS_SECURITY_GROUP_NAME') != '' else item.name }}"
-    description: "{{ item.description }}"
-    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
+    name: "{{ aws.security_groups[0].name }}"
+    description: "{{ aws.security_groups[0].description }}"
+    region: "{{ aws.region }}"
+    rules: "{{ aws.security_groups[0].rules }}"
+    rules_egress: "{{ aws.security_groups[0].rules_egress }}"
     state: present
-    rules: "{{ item.rules }}"
-    rules_egress: "{{ item.rules_egress }}"
   register: created_groups
-  with_items: aws.security_groups
 
 - name: debug security group
   debug: msg="{{ created_groups }}"

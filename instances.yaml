@@ -14,15 +14,15 @@
 
 - name: Provision EC2 instances.
   ec2:
-    key_name: "{{ lookup('env','AWS_KEY_NAME') if lookup('env','AWS_KEY_NAME') != '' else aws.keypair }}"
+    key_name: "{{ aws.keypair }}"
     instance_tags:
       Name: "{{ item.name }}"
-      inventory_group: "{{ lookup('env','AWS_INVENTORY_GROUP') if lookup('env','AWS_INVENTORY_GROUP') != '' else item.inventory_group }}"
+      inventory_group: "{{ item.inventory_group }}"
       inventory_host: "{{ item.name }}"
-    group: "{{ lookup('env','AWS_SECURITY_GROUP_LIST') if lookup('env','AWS_SECURITY_GROUP_LIST') != '' else item.security_group }}"
-    instance_type: "{{ lookup('env','AWS_INSTANCE_TYPE') if lookup('env','AWS_INSTANCE_TYPE') != '' else item.instance_type }}" # Free
+    group: "{{ item.security_group }}"
+    instance_type: "{{ item.instance_type }}"
     image: "{{ ami_data.ami }}"
-    region: "{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
+    region: "{{ aws.region }}"
     wait: yes
     wait_timeout: 500
     exact_count: 1
@@ -30,6 +30,7 @@
       Name: "{{ item.name }}"
       inventory_group: "{{ item.inventory_group }}"
       inventory_host: "{{ item.name }}"
+    vpc_subnet_id: "{{ item.vpc_subnet_id }}"
   register: created_instances
   with_items: "{{ aws.instances }}"
 
