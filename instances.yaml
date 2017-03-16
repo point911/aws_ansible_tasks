@@ -31,8 +31,10 @@
       inventory_group: "{{ item.inventory_group }}"
       inventory_host: "{{ item.name }}"
     assign_public_ip: "{{ item.assign_public_ip if item.assign_public_ip is defined else 'False' }}"
-    ebs_optimized: "{{ item.ebs_optimized if item.ebs_optimized is defined else 'True' }}"
-    volumes: "{{ item.volumes if item.volumes is defined else '' }}"
+# TODO: Depends on instance type
+#    ebs_optimized: "{{ item.ebs_optimized if item.ebs_optimized is defined else 'True' }}"
+# TODO make param plugible
+#    volumes: "{{ item.volumes if item.volumes is defined else '' }}"
     vpc_subnet_id: "{{ item.vpc_subnet_id }}"
 
   register: created_instances
