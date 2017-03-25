@@ -1,17 +1,5 @@
 ---
 
-- name: search for an ami image
-  ec2_ami_search: >
-    region="{{ lookup('env','AWS_REGION') if lookup('env','AWS_REGION') != '' else aws.region }}"
-    store="ebs"
-    virt="hvm"
-    distro="ubuntu"
-    release="trusty"
-  register: ami_data
-
-- name: debug ami image
-  debug: msg="{{ ami_data }}"
-
 - name: Provision EC2 instances.
   ec2:
     key_name: "{{ aws.keypair }}"
@@ -21,7 +9,7 @@
       inventory_host: "{{ item.name }}"
     group: "{{ item.security_group }}"
     instance_type: "{{ item.instance_type }}"
-    image: "{{ ami_data.ami }}"
+    image: "{{ aws.image }}"
     region: "{{ aws.region }}"
     wait: yes
     wait_timeout: 500
@@ -31,8 +19,8 @@
       inventory_group: "{{ item.inventory_group }}"
       inventory_host: "{{ item.name }}"
     assign_public_ip: "{{ item.assign_public_ip if item.assign_public_ip is defined else 'False' }}"
-    ebs_optimized: "{{ item.ebs_optimized if item.ebs_optimized is defined else 'True' }}"
-    volumes: "{{ item.volumes if item.volumes is defined else '' }}"
+    ebs_optimized: "{{ item.ebs_optimized if item.ebs_optimized is defined else 'False' }}"
+    volumes: "{{ item.volumes }}"
     vpc_subnet_id: "{{ item.vpc_subnet_id }}"
 
   register: created_instances
@@ -51,13 +39,13 @@
   when: item.1.instances is defined
   with_indexed_items: "{{ created_instances.results }}"
 
-- debug: msg="{{ groups.aws }}"
-
 # Wait until ssh will be reachable
 - name: Wait until ssh will be reachable
-  local_action: wait_for
-    host={{ item }}
-    port=22
-    timeout=300
-    state=started
-  with_items: "{{ groups.aws }}"
+  local_action:
+    module: wait_for
+    host: "{{ item.1.tagged_instances.0.private_ip }}"
+    port: 22
+    timeout: 300
+    state: started
+  when: item.1.instances is defined
+  with_indexed_items: "{{ created_instances.results }}"
